@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Interfaces\PurchaseRepositoryInterface;
 use App\Jobs\CheckSubscriptionIsExpiredJob;
 use Illuminate\Console\Command;
 
@@ -22,13 +23,19 @@ class CheckSubscriptions extends Command
     protected $description = 'Command description';
 
     /**
+     * @var PurchaseRepositoryInterface
+     */
+    private PurchaseRepositoryInterface $purchaseRepository;
+
+    /**
      * Create a new command instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(PurchaseRepositoryInterface $purchaseRepository)
     {
         parent::__construct();
+        $this->purchaseRepository = $purchaseRepository;
     }
 
     /**
@@ -38,6 +45,9 @@ class CheckSubscriptions extends Command
      */
     public function handle()
     {
-        CheckSubscriptionIsExpiredJob::dispatch();
+        $expiredSubscriptions = $this->purchaseRepository->fetchExpiredSubscriptions();
+        if ($expiredSubscriptions != null) {
+            CheckSubscriptionIsExpiredJob::dispatch($expiredSubscriptions);
+        }
     }
 }

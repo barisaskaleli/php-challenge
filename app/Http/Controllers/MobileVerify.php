@@ -7,6 +7,7 @@ use App\Interfaces\PurchaseRepositoryInterface;
 use App\Models\Purchase;
 use App\Http\Traits\RespondsWithHttpStatus;
 use Illuminate\Http\JsonResponse;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class MobileVerify extends Controller
 {
@@ -96,5 +97,58 @@ class MobileVerify extends Controller
         }
 
         return $this->failure("Services can't verify receipt.");
+    }
+
+    /**
+     * @param $subscriptionID
+     * @param $receipt
+     * @param $operatingSystem
+     * @return bool
+     */
+    public function redirectToSelectedOsViaJob($subscriptionID, $receipt, $operatingSystem){
+        if($operatingSystem == 'android'){
+            return $this->androidVerifyViaJob($subscriptionID, $receipt);
+        }
+        elseif($operatingSystem == 'ios'){
+            return $this->iosVerifyViaJob($subscriptionID, $receipt);
+        }
+    }
+
+    /**
+     * @param $subscriptionID
+     * @param $receipt
+     * @return bool
+     */
+    private function iosVerifyViaJob($subscriptionID, $receipt): bool
+    {
+        return $this->extracted($receipt, $subscriptionID);
+    }
+
+    /**
+     * @param $subscriptionID
+     * @param $receipt
+     * @return bool
+     */
+    private function androidVerifyViaJob($subscriptionID, $receipt): bool
+    {
+        return $this->extracted($receipt, $subscriptionID);
+    }
+
+    /**
+     * @param $receipt
+     * @param $subscriptionID
+     * @return bool
+     */
+    private function extracted($receipt, $subscriptionID): bool
+    {
+        $lastTwoCharacter = substr($receipt, -2);
+        if ((int) $lastTwoCharacter % 6 == 0)
+            return false;
+
+        $expireDate = date('Y-m-d H:i:s', strtotime(   '+'.rand(1, 30).' days'));
+
+        $this->purchaseRepository->editPurchase($expireDate, $subscriptionID);
+
+        return true;
     }
 }

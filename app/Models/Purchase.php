@@ -30,6 +30,6 @@ class Purchase extends Model
 
     public function device()
     {
-        return $this->belongsTo('App\Models\Devices', 'device_id', 'id');
+        return $this->belongsTo(Devices::class, 'device_id', 'id');
     }
 }

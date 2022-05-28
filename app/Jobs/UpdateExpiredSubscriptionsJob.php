@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Interfaces\PurchaseRepositoryInterface;
+use App\Http\Controllers\MobileVerify;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -10,11 +10,18 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class CheckSubscriptionIsExpiredJob implements ShouldQueue
+class UpdateExpiredSubscriptionsJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $expiredSubscriptions;
+    /**
+     * The number of times the job may be attempted.
+     *
+     * @var int
+     */
+    public $tries = 3;
+
+    protected $subscription;
 
     /**
      * Create a new job instance.
@@ -23,7 +30,7 @@ class CheckSubscriptionIsExpiredJob implements ShouldQueue
      */
     public function __construct($expiredSubscriptions)
     {
-        $this->expiredSubscriptions = $expiredSubscriptions;
+        $this->subscription = $expiredSubscriptions;
     }
 
     /**
@@ -33,8 +40,11 @@ class CheckSubscriptionIsExpiredJob implements ShouldQueue
      */
     public function handle()
     {
-        foreach ($this->expiredSubscriptions as $expiredSubscription) {
-            UpdateExpiredSubscriptionsJob::dispatch($expiredSubscription);
+        $check = app(MobileVerify::class)->redirectToSelectedOsViaJob($this->subscription->id, $this->subscription->receipt_hash, $this->subscription->device->operating_system);
+
+        // if check returns false retry the job
+        if (!$check) {
+            $this->fail($check);
         }
     }
 }

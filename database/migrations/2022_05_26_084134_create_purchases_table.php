@@ -21,7 +21,7 @@ class CreatePurchasesTable extends Migration
         });
 
         Schema::table('purchases', function (Blueprint $table) {
-            $table->unsignedBigInteger('device_id');
+            $table->unsignedBigInteger('device_id')->nullable();
             $table->foreign('device_id')->references('id')->on('devices');
         });
     }

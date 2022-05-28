@@ -13,6 +13,13 @@ class PurchaseRepository implements PurchaseRepositoryInterface
         return Purchase::create($data);
     }
 
+    public function editPurchase($expiredDate, $id)
+    {
+        $subs = Purchase::find($id);
+        $subs->expired_at = $expiredDate;
+        return $subs->save();
+    }
+
     public function checkSubscriptions(int $osID)
     {
         return Purchase::where('device_id', $osID)->get();
@@ -20,6 +27,6 @@ class PurchaseRepository implements PurchaseRepositoryInterface
 
     public function fetchExpiredSubscriptions()
     {
-        return Purchase::where('expiration_date', '<', date('Y-m-d'))->get();
+        return Purchase::with('device')->where('expired_at', '<', date('Y-m-d H:i'))->get();
     }
 }

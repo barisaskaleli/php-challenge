@@ -1,4 +1,8 @@
 version: "3.8"
+
+networks:
+  laravel:
+
 services:
 
     # PHP
@@ -17,12 +21,15 @@ services:
         ports:
             - "8000:8000"
         depends_on:
-            -  database
-            -  redis
+            - database
+            - redis
+        networks:
+          - laravel
 
 
     # Database
     database:
+        container_name: mysql
         image: mysql:8.0
         ports:
             -   3306:3306
@@ -33,13 +40,58 @@ services:
             - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
         volumes:
             -   db-data:/var/lib/mysql
+        networks:
+          - laravel
 
     # Redis
     redis:
-        image: redis:alpine
-        command: redis-server --appendonly yes --requirepass "${REDIS_PASSWORD}"
+        image: redis:latest
+        container_name: redis
+        command: ["redis-server", "--bind", "redis", "--port", "6379"]
         ports:
             - 6379:6379
+        networks:
+          - laravel
+
+    # Queue Server
+    queue:
+      build:
+        context: .
+        target: php
+        args:
+          - APP_ENV=${APP_ENV}
+      environment:
+        - APP_ENV=${APP_ENV}
+        - CONTAINER_ROLE=queue
+      working_dir: /var/www
+      volumes:
+        - ./:/var/www
+      networks:
+        - laravel
+
+
+    # Scheduler
+    scheduler:
+      build:
+        context: .
+        target: php
+        args:
+          - APP_ENV=${APP_ENV}
+      depends_on:
+        - app
+      environment:
+        APP_ENV: ${APP_ENV}
+        CONTAINER_ROLE: scheduler
+        CACHE_DRIVER: redis
+        SESSION_DRIVER: redis
+        QUEUE_DRIVER: redis
+        REDIS_HOST: redis
+      working_dir: /var/www
+      volumes:
+        - ./:/var/www
+      networks:
+        - laravel
+
 
 volumes:
     db-data: ~
