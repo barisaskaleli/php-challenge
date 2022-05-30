@@ -1,0 +1,420 @@
+{
+	"info": {
+		"_postman_id": "32175fe0-5dff-4bfa-801c-e3ba9a107249",
+		"name": "API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json()\r",
+							"pm.collectionVariables.set(\"client_token\", response.data.client_token)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"uid\": 1,\r\n    \"appId\": 2,\r\n    \"language\": \"TR\",\r\n    \"operating_system\": \"ios\"\r\n}"
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/register",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Register",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"uid\": 1,\r\n    \"appId\": 2,\r\n    \"language\": \"TR\",\r\n    \"operating_system\": \"ios\"\r\n}"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/register",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Host",
+							"value": "localhost:8000"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 30 May 2022 19:35:50 GMT"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 30 May 2022 19:35:50 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.4.29"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "60"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "59"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": true,\n    \"data\": {\n        \"client_token\": \"5|Q3r9DTlRdMshLdbqdaBGfQX8WsnwnIUm5isYdcyy\"\n    },\n    \"message\": \"Successful.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Purchase",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{client_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"receipt_hash\": \"43651234121243                                                \"\r\n}"
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/purchase",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"purchase"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Purchase",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"receipt_hash\": \"43651234121243                                                \"\r\n}"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/purchase",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"purchase"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Host",
+							"value": "localhost:8000"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 30 May 2022 19:35:54 GMT"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 30 May 2022 19:35:54 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.4.29"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "60"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "58"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": true,\n    \"data\": {\n        \"status\": true,\n        \"expire_date\": \"2022-06-15 19:35:54\"\n    },\n    \"message\": \"OK\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Check Subscriptions",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{client_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/check-subscriptions",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"check-subscriptions"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Check Subscriptions",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/check-subscriptions",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"check-subscriptions"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Host",
+							"value": "localhost:8000"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 30 May 2022 19:36:05 GMT"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 30 May 2022 19:36:05 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.4.29"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "60"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "57"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": true,\n    \"data\": {\n        \"subscriptions\": [\n            {\n                \"receipt_hash\": \"12313\",\n                \"expired_at\": \"2022-06-27T18:36:06.000000Z\"\n            },\n            {\n                \"receipt_hash\": \"12317\",\n                \"expired_at\": \"2022-06-03T18:36:06.000000Z\"\n            },\n            {\n                \"receipt_hash\": \"12317\",\n                \"expired_at\": \"2022-06-01T18:36:06.000000Z\"\n            },\n            {\n                \"receipt_hash\": \"12313\",\n                \"expired_at\": \"2022-06-25T18:36:06.000000Z\"\n            },\n            {\n                \"receipt_hash\": \"12313\",\n                \"expired_at\": \"2022-06-12T16:38:05.000000Z\"\n            },\n            {\n                \"receipt_hash\": \"12313\",\n                \"expired_at\": \"2022-06-05T16:39:05.000000Z\"\n            },\n            {\n                \"receipt_hash\": \"12313\",\n                \"expired_at\": \"2022-06-08T16:40:05.000000Z\"\n            },\n            {\n                \"receipt_hash\": \"12313\",\n                \"expired_at\": \"2022-06-09T16:41:05.000000Z\"\n            },\n            {\n                \"receipt_hash\": \"12313\",\n                \"expired_at\": \"2022-06-27T16:42:05.000000Z\"\n            },\n            {\n                \"receipt_hash\": \"asd1231ag1243\",\n                \"expired_at\": \"2022-06-15T19:35:54.000000Z\"\n            }\n        ]\n    },\n    \"message\": \"Successful.\"\n}"
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BASE_URL",
+			"value": "http://localhost:8000/api",
+			"type": "default"
+		},
+		{
+			"key": "client_token",
+			"value": "",
+			"type": "default"
+		}
+	]
+}

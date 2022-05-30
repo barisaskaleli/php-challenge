@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CanceledEvent;
 use App\Http\Requests\PurchaseRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Interfaces\DeviceRepositoryInterface;
@@ -73,6 +74,10 @@ class ApiController extends Controller
     public function checkSubscriptions(Request $request): JsonResponse
     {
         $purchases = $this->purchaseRepository->checkSubscriptions($request->user()->id);
+
+        if ($purchases->isEmpty()) {
+            event(new CanceledEvent($request->user()->operating_system, $request->user()->appId));
+        }
 
         $purchases->transform(function ($purchase) {
             $purchase->expired_at = $purchase->expired_at->format('d-m-Y H:i:s');
